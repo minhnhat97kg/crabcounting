@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Alert,
@@ -17,12 +17,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import Icon from "react-native-vector-icons/FontAwesome";
+import moment from "moment";
+import axios from "axios";
+import { Context } from "../../context";
 
 let width = Dimensions.get("window").width;
 let height = Dimensions.get("window").height;
 
 const CameraScreen = ({ navigation }) => {
   let RefCamera;
+  const { config } = useContext(Context);
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
@@ -49,23 +53,46 @@ const CameraScreen = ({ navigation }) => {
   }
 
   const takePicture = async () => {
-    const photo = await RefCamera.takePictureAsync({skipProcessing:true});
+    const photo = await RefCamera.takePictureAsync({ skipProcessing: true });
     const manipResult = await ImageManipulator.manipulateAsync(
       photo.uri,
       [{ resize: { height: 1024, width: 768 } }],
       { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
     );
-    addList([manipResult,...list, ]);
+    request(manipResult);
+  };
 
-  //   const asset = await MediaLibrary.createAssetAsync(manipResult.uri);
+  const request = (image) => {
+    let uri =
+      Platform.OS === "android" ? image.uri : image.uri.replace("file://", "");
 
-  //   MediaLibrary.createAlbumAsync("Crab", asset)
-  //     .then(() => {
- 
-  //     })
-  //     .catch((error) => {
-  //       console.log("err", error);
-  //     });
+    const formData = new FormData();
+    formData.append("file", {
+      uri: uri,
+      type: "image/jpeg",
+      name: "image.jpg",
+    });
+    formData.append("id_client", 1);
+    formData.append("date_post", moment().unix());
+    formData.append("types", "jpg");
+    axios({
+      url: `${config.host}/api/predict`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+      method: "POST",
+      timeout: 2 * 60 * 1000,
+    })
+      .then(({ data }) => {
+        console.log(data);
+        addList([
+          { filename: data.filename, predict: data.predict, uri: uri },
+          ...list,
+        ]);
+        setSnap(false);
+      })
+      .catch(({ response }) => {
+        console.log("error", response);
+      });
   };
 
   return (
@@ -113,13 +140,13 @@ const CameraScreen = ({ navigation }) => {
               onPress={() => {
                 //Delay to snap
                 setSnap(true);
-                setTimeout(() => setSnap(false), 1000);
+
                 takePicture();
               }}
             >
               <View
                 style={{
-                  backgroundColor: "red",
+                  backgroundColor: disableSnap ? "grey" : "red",
                   height: 50,
                   width: 50,
                   borderRadius: 25,
@@ -153,8 +180,8 @@ const CameraScreen = ({ navigation }) => {
           scrollToOverflowEnabled={true}
           data={list}
           horizontal={true}
-          keyExtractor={(item,index)=>index}
-          renderItem={({ item,index }) => (
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
             <View>
               <Image
                 source={{ uri: item.uri }}
@@ -176,8 +203,18 @@ const CameraScreen = ({ navigation }) => {
                   alignItems: "center",
                 }}
               >
-              <View style={{borderRadius:10,padding:2, backgroundColor:'grey', top:25,right:25}}>
-                <Text style={{fontSize:20,color:"white",}}>{`#${index+1}`}</Text>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    padding: 2,
+                    backgroundColor: "grey",
+                    top: 25,
+                    right: 25,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 20, color: "white" }}
+                  >{`#${item.predict}`}</Text>
                 </View>
               </View>
             </View>

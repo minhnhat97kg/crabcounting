@@ -11,12 +11,12 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../context";
 const Setting = () => {
-  const { host, setHost } = React.useContext(Context);
+  const { config, updateConfig } = React.useContext(Context);
+  const [text, changeText] = React.useState(config.host);
 
-  const [text, changeText] = React.useState(host);
   React.useEffect(() => console.log(host), [host]);
   function handleSetHost() {
-    setHost(text);
+    updateConfig({ ...config, host: text });
   }
   return (
     <View style={styles.container}>

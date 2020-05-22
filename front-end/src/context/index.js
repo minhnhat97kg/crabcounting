@@ -4,10 +4,13 @@ import {} from "react-native";
 export const Context = React.createContext();
 
 export default Provider = (props) => {
-  const [host, setHost] = useState("1a9ab9bf");
+  const [config, updateConfig] = useState({
+    host: "http://localhost:5000",
+    token: null,
+  });
 
   return (
-    <Context.Provider value={{ host, setHost }}>
+    <Context.Provider value={{ config, updateConfig }}>
       {props.children}
     </Context.Provider>
   );

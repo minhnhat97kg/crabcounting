@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
+
+import { Context } from "../../context";
+
 const Home = ({ navigation }) => {
+  const { config, updateConfig } = React.useContext(Context);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -49,6 +53,14 @@ const Home = ({ navigation }) => {
           >
             <Icon style={styles.icon} name="cog" size={32} color="black" />
             <Text style={styles.label}>Cài đặt</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => updateConfig({ ...config, token: null })}
+            style={styles.cardContainer}
+          >
+            <Icon style={styles.icon} name="sign-out" size={32} color="black" />
+            <Text style={styles.label}>Thoát</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>

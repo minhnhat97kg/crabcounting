@@ -1,3 +1,4 @@
+#export ENV_FILE_LOCATION=./.env
 from flask import Flask,jsonify,request
 from flask_restful import Api,Resource
 from flask_bcrypt import Bcrypt
@@ -14,7 +15,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 app = Flask(__name__)
-#export ENV_FILE_LOCATION=./.env
 app.config.from_envvar('ENV_FILE_LOCATION')
 api = Api(app)
 bcrypt = Bcrypt(app)
@@ -59,19 +59,19 @@ class PredictApi(Resource):
         current_user = get_jwt_identity()
         now = datetime.datetime.now()
         file = request.files['file']
-       
+
         if file and allowed_file(file.filename):
-       
+
             fileExt = file.filename.rsplit('.', 1)[1].lower()
-            path = os.path.join(app.config['UPLOAD_FOLDER'], str(datetime.datetime.timestamp(now))+"."+fileExt) 
+            path = os.path.join(app.config['UPLOAD_FOLDER'], str(datetime.datetime.timestamp(now))+"."+fileExt)
             file.save(path)
             # reponse
-            
+
             return {'predict':100,'filename':str(path)},200
         return {'error':True,'message':'file is require'},400
 
 
-#post is json 
+#post is json
 class HistoryApi(Resource):
     @jwt_required
     def get(self):
@@ -80,10 +80,9 @@ class HistoryApi(Resource):
     def post(self):
         body = request.get_json()
         return body
-        
 
-        
-        
+
+
 
 api.add_resource(PredictApi, '/api/predict') # Route_1
 api.add_resource(SignupApi, '/api/auth/signup')
