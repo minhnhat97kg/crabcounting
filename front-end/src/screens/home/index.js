@@ -15,7 +15,7 @@ import { Context } from "../../context";
 const Home = ({ navigation }) => {
   const { config, updateConfig } = React.useContext(Context);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1,backgroundColor:"black" }}>
       <View style={styles.container}>
         <LinearGradient
           colors={["#8929AD", "#436AAC", "#43B7B8"]}

@@ -5,7 +5,7 @@ export const Context = React.createContext();
 
 export default Provider = (props) => {
   const [config, updateConfig] = useState({
-    host: "http://localhost:5000",
+    host: "http://b9da9c48bc3b.ngrok.io",
     token: null,
   });
 

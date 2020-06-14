@@ -8,19 +8,43 @@ export default StyleSheet.create({
         height: "100%"
 
     },
-    logo: {
-        fontSize:22,
-        alignSelf:"center"
+    title: {
+        fontSize:40,
+        textAlign:'center',
+        fontWeight:'bold',
+        alignSelf:"center",
+        marginBottom:10,
+        color:'white',
+        textShadowColor: 'rgba(0.5, 0.5, 0.5, 0.75)',
+		textShadowOffset: {width: -2, height: 2},
+		textShadowRadius: 10,
+
+    },
+
+    subTitle: {
+        fontSize:30,
+        textAlign:'center',
+        fontWeight:'bold',
+        alignSelf:"center",
+        marginBottom:10,
+        color:'white',
+        textShadowColor: 'rgba(0.5, 0.5, 0.5, 0.75)',
+		textShadowOffset: {width: -2, height: 2},
+		textShadowRadius: 10
     },
 
     form: {
-        height: "50%",
         width:"80%",
         alignItems:"center",
         justifyContent:"center",
+        backgroundColor:'rgba(0,0,0,0.8)',
+        padding:20,
+        borderRadius:10
     },
-    phone: {
-        marginBottom:20   
+    input: {
+        marginBottom:0 ,
+        padding:0,
+        color:'white'
     },
     login: {
         width: "100%"

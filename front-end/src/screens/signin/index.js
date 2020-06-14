@@ -1,7 +1,7 @@
 import React, { useContext, useState, useReducer, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Input, Button } from "react-native-elements";
-import { View, Text } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
 import styles from "./style";
 import { Context } from "../../context";
 import axios from "axios";
@@ -9,8 +9,8 @@ import axios from "axios";
 export default Index = (props) => {
   const { config, updateConfig } = React.useContext(Context);
   const [values, setValues] = React.useState({
-    username: "demo",
-    password: "123456",
+    username: "lucky",
+    password: "1",
   });
   const [status, setStatus] = useState(null);
   const [submit, setSubmit] = useState(false);
@@ -38,39 +38,49 @@ export default Index = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>{}</Text>
-      <View style={styles.form}>
-        <Input
-          placeholder={"Số điện thoại"}
-          value={values.username}
-          onChangeText={(t) => onChangeHanlde("username", t)}
-          type={"username"}
-          leftIcon={
-            <Icon name="user" size={24} color="black" style={styles.icon} />
-          }
-          containerStyle={styles.phone}
-          keyboardType="decimal-pad"
-        />
+    <ImageBackground
+      source={require("../../../assets/logo.png")}
+      style={{ width: "100%", height: "100%", }}
+      blurRadius={10}
+    >
+      <View style={styles.container}>
+        <Text style={styles.subTitle}>{`ỨNG DỤNG`}</Text>
+        <Text style={styles.title}>{`ĐẾM CUA GIỐNG`}</Text>
+        <View style={styles.form}>
+          <Input
+            placeholder={"Số điện thoại"}
+            value={values.username}
+            onChangeText={(t) => onChangeHanlde("username", t)}
+            type={"username"}
+            leftIcon={
+              <Icon name="user" size={24} color="white" style={styles.icon} />
+            }
+            containerStyle={styles.input}
+            placeholderTextColor="lightgrey"
+            inputStyle={{ color: "white" }}
+          />
 
-        <Input
-          value={values.password}
-          onChangeText={(t) => onChangeHanlde("password", t)}
-          type={"password"}
-          placeholder={"Mật khẩu"}
-          secureTextEntry={true}
-          leftIcon={
-            <Icon name="key" size={24} color="black" style={styles.icon} />
-          }
-          containerStyle={styles.phone}
-        />
+          <Input
+            value={values.password}
+            onChangeText={(t) => onChangeHanlde("password", t)}
+            type={"password"}
+            placeholder={"Mật khẩu"}
+            secureTextEntry={true}
+            leftIcon={
+              <Icon name="key" size={24} color="white" style={styles.icon} />
+            }
+            placeholderTextColor="lightgrey"
+            inputStyle={{ color: "white" }}
+            containerStyle={styles.input}
+          />
 
-        <Button
-          title={"Đăng nhập"}
-          containerStyle={styles.login}
-          onPress={submitHandle}
-        />
+          <Button
+            title={"Đăng nhập"}
+            containerStyle={styles.login}
+            onPress={submitHandle}
+          />
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };

@@ -1,8 +1,8 @@
 {
   "devToolsPort": 19003,
   "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 7716,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://zv-v54.anonymous.front-end.exp.direct",
   "packagerNgrokUrl": "https://packager.zv-v54.anonymous.front-end.exp.direct",
   "ngrokPid": 7724
